@@ -24,6 +24,7 @@ int isRootBlack(RBTree *t){
 }
 
 void leftRotate(RBTree *t, RBNode* x){
+  assert( x != NULL);
   RBNode* y = x->right;
   RBNode* Yparent = y->parent;
   RBNode* Xparent = x->parent;
@@ -44,6 +45,7 @@ void leftRotate(RBTree *t, RBNode* x){
 }
 //prueba
 void rightRotate(RBTree *t, RBNode* y){
+  assert(y != NULL);
   RBNode* x = y->left;
   RBNode* Yparent = y->parent;
   RBNode* Xparent = x->parent;
