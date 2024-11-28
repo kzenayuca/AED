@@ -42,7 +42,7 @@ void leftRotate(RBTree *t, RBNode* x){
   Xparent = y;
 
 }
-
+//prueba
 void rightRotate(RBTree *t, RBNode* y){
   RBNode* x = y->left;
   RBNode* Yparent = y->parent;
