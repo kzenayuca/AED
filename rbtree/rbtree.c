@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "rbtree.h"
@@ -45,7 +46,7 @@ void leftRotate(RBTree *t, RBNode* x){
   if(x->parent ==  NULL){
     t->root = y;
   }else{
-    if(x == x->parent->left;)
+    if(x == x->parent->left)
       x->parent->left = y;
     else
       x->parent->right = y;
@@ -83,9 +84,13 @@ void rightRotate(RBTree *t, RBNode* y){
   y->parent = x;
 }
 void rbInsertFixUp(RBTree *t, RBNode *z){
+  assert(t != NULL);
+  assert(z != NULL);
+  //assert(z->parent != NULL);
   while( z->parent && z->parent->color == RED){
     RBNode* y;
-    if(z->parent == z->parent->parent->right){
+    if(z->parent == z->parent->parent->left){
+      assert(z->parent->parent->right != NULL);
       y = z->parent->parent->right;
       if(y->color == RED){
         z->parent->color = BLACK;
@@ -102,14 +107,15 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
         rightRotate(t,z->parent->parent);
       }
     }else{
-      y = z->parent->parent->left;
+      y = z->parent->parent->left; //que pasa si no tiene un tio
+      assert(z->parent->parent->left != NULL);
       if(y->color == RED){
         z->parent->color = BLACK;
         y->color = BLACK;
         z->parent->parent->color = RED;
         z = z->parent->parent;
       }else{
-        if(z == z->parent->right){
+        if(z == z->parent->left){
           z = z->parent;
           rightRotate(t,z);
         }
@@ -126,8 +132,10 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
 }
 void rbInsert(RBTree *t, RBNode* z){
   assert(t != NULL);
-
+  assert(z != NULL);
+  //raiz
   RBNode* x = t->root;
+  //padre a identificar
   RBNode* y = NULL;
 
   while(x){
@@ -152,9 +160,10 @@ void rbInsert(RBTree *t, RBNode* z){
   z->color = RED;
   rbInsertFixUp(t, z);
 }
-
+/*
 void print(RBTree *t){
   if(t == NULL){
     return 
   }
 }
+*/
