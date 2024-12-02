@@ -13,58 +13,74 @@ RBNode* createRBNode(int key){
 }
 
 RBTree* createRBTree(){
-  RBTree* t = malloc(sizeof(RBTree));
-  t->root = NULL;
-  return t;
+  RBTree* newTree = (RBTree*)malloc(sizeof(RBTree));
+  if(newTree == NULL){
+    fprintf(stderr,"Error: No se pudo asignar memeoria para el arbol.\n");
+    exit(EXIT_FAILURE);
+  }
+  newTree->root = NULL;
+  return newTree;
 }
 
 int isRootBlack(RBTree *t){
-  if(!t->root) return 1;
+  assert(t != NULL);
+  if(!t->root) 
+    return 1;
   return t->root->color == BLACK;
 }
 
 void leftRotate(RBTree *t, RBNode* x){
-  assert( x != NULL);
-  RBNode* y = x->right;
-  RBNode* Yparent = y->parent; //no necesario.
-  RBNode* Xparent = x->parent;
-  RBNode* B = y->left;
+  assert(t != NULL);
+  assert(x != NULL);
 
-  if(y->left){ //no necesario, 
-    x->right = y->left;
+  RBNode* y = x->right;
+  x->right = y->left; //asignacion de B
+
+  if(y->left != NULL){
     y->left->parent = x;
   }
-  else
-    x->right = NULL;
-  //aqui fuera x->right = y->left;
+
+  y->parent = x->parent;
   
+  if(x->parent ==  NULL){
+    t->root = y;
+  }else{
+    if(x == x->parent->left;)
+      x->parent->left = y;
+    else
+      x->parent->right = y;
+    
+  }
   y->left = x;
-  
-  y->parent  = Xparent;
   x->parent = y;
 }
 
 //prueba
 void rightRotate(RBTree *t, RBNode* y){
+  assert(t != NULL);
   assert(y != NULL);
+  //asignamos un nombre al hijo izq de y;
   RBNode* x = y->left;
-  assert(x != NULL);
-  RBNode* Yparent = y->parent;
-  RBNode* Xparent = x->parent;
-
-
-  if(x->right){
-    y->left = x->right;
+  //cambio: el hijo izq de y apunta al hijo der de x
+  y->left = x->right;
+  //si el hijo der de x no es NULL hacemos que su puntero parent  apunte a y
+  if(x->right != NULL)
     x->right->parent = y;
+  //el padre de x ahora apunta al padre de y 
+  x->parent = y->parent;
+  //si y era raiz, ahora x va ser raiz
+  if(y->parent == NULL)
+    t->root = x;
+  else{ //si no es el caso entonces
+    //ubicamos x como hijo izq o der
+    if(y == y->parent->left)
+      y->parent->left = x;
+    else
+      y->parent->right = x;
   }
-  else
-    y->left = NULL;
-  
 
-  x->right = y;
-
-  x->parent = Yparent;
-  y->parent = x; 
+  x->left = y;
+  y->parent = x;
 
 }
 void rbInsertFixUp(RBTree *t, RBNode *z){
@@ -110,6 +126,8 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
 
 }
 void rbInsert(RBTree *t, RBNode* z){
+  assert(t != NULL);
+
   RBNode* x = t->root;
   RBNode* y = NULL;
 
@@ -131,6 +149,8 @@ void rbInsert(RBTree *t, RBNode* z){
     else
       y->right = z;
   }
+
+  z->color = RED;
   rbInsertFixUp(t, z);
 }
 
