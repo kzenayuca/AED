@@ -26,8 +26,34 @@ RBTree* createRBTree(){
 int isRootBlack(RBTree *t){
   assert(t != NULL);
   if(!t->root) 
-    return 1;
+    return 0;
   return t->root->color == BLACK;
+}
+
+int blackHeight(RBNode *rbnode){
+  if(rbnode == NULL){
+    return (0);
+  }else{
+    int bh = blackHeight(rbnode->left);
+
+    if(rbnode->color == BLACK)
+      return (bh+1);
+    else
+      return bh;
+  }
+}
+
+int validateBlackChildren(RBNode *rbnode){
+  if(rbnode->color == RED){
+    if(rbnode->left->color == BLACK && rbnode->right->color == BLACK){
+      return 1;
+    }
+  }
+  return 0;
+}
+
+int verifyRBTreeBalance(RBTree *rbtree){
+  
 }
 
 void leftRotate(RBTree *t, RBNode* x){
@@ -86,6 +112,7 @@ void rightRotate(RBTree *t, RBNode* y){
 void rbInsertFixUp(RBTree *t, RBNode *z){
   assert(t != NULL);
   assert(z != NULL);
+  //assert(isRootBlack(t));
   //assert(z->parent != NULL);
   while( z->parent && z->parent->color == RED){
     RBNode* y;
@@ -125,9 +152,8 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
       }
 
     }
-    t->root->color = BLACK;
   }
-
+  t->root->color = BLACK;
 
 }
 void rbInsert(RBTree *t, RBNode* z){
@@ -159,6 +185,10 @@ void rbInsert(RBTree *t, RBNode* z){
 
   z->color = RED;
   rbInsertFixUp(t, z);
+}
+
+void deleteRBNode(RBTree *rbtree, int value){
+
 }
 /*
 void print(RBTree *t){

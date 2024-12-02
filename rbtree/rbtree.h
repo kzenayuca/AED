@@ -22,6 +22,6 @@ void rbInsert(RBTree *t, RBNode* z);
 void leftRotate(RBTree *t, RBNode* x);
 void rightRotate(RBTree *t, RBNode* y);
 
-
+int blackHeight(RBNode *rbnode);
 #endif
 
