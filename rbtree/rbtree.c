@@ -26,29 +26,32 @@ int isRootBlack(RBTree *t){
 void leftRotate(RBTree *t, RBNode* x){
   assert( x != NULL);
   RBNode* y = x->right;
-  RBNode* Yparent = y->parent;
+  RBNode* Yparent = y->parent; //no necesario.
   RBNode* Xparent = x->parent;
+  RBNode* B = y->left;
 
-  if(y->left){
+  if(y->left){ //no necesario, 
     x->right = y->left;
     y->left->parent = x;
   }
   else
     x->right = NULL;
+  //aqui fuera x->right = y->left;
   
-
   y->left = x;
-
-  Yparent = Xparent;
-  Xparent = y;
-
+  
+  y->parent  = Xparent;
+  x->parent = y;
 }
+
 //prueba
 void rightRotate(RBTree *t, RBNode* y){
   assert(y != NULL);
   RBNode* x = y->left;
+  assert(x != NULL);
   RBNode* Yparent = y->parent;
   RBNode* Xparent = x->parent;
+
 
   if(x->right){
     y->left = x->right;
@@ -60,11 +63,52 @@ void rightRotate(RBTree *t, RBNode* y){
 
   x->right = y;
 
-  Xparent = Yparent;
-  Yparent = x; 
+  x->parent = Yparent;
+  y->parent = x; 
 
 }
+void rbInsertFixUp(RBTree *t, RBNode *z){
+  while( z->parent && z->parent->color == RED){
+    RBNode* y;
+    if(z->parent == z->parent->parent->right){
+      y = z->parent->parent->right;
+      if(y->color == RED){
+        z->parent->color = BLACK;
+        y->color = BLACK;
+        z->parent->parent->color = RED;
+        z = z->parent->parent;
+      }else{
+        if(z == z->parent->right){
+          z = z->parent;
+          leftRotate(t,z);
+        }
+        z->parent->color = BLACK;
+        z->parent->parent->color = RED;
+        rightRotate(t,z->parent->parent);
+      }
+    }else{
+      y = z->parent->parent->left;
+      if(y->color == RED){
+        z->parent->color = BLACK;
+        y->color = BLACK;
+        z->parent->parent->color = RED;
+        z = z->parent->parent;
+      }else{
+        if(z == z->parent->right){
+          z = z->parent;
+          rightRotate(t,z);
+        }
+        z->parent->color = BLACK;
+        z->parent->parent->color = RED;
+        leftRotate(t,z->parent->parent);
+      }
 
+    }
+    t->root->color = BLACK;
+  }
+
+
+}
 void rbInsert(RBTree *t, RBNode* z){
   RBNode* x = t->root;
   RBNode* y = NULL;
@@ -87,6 +131,11 @@ void rbInsert(RBTree *t, RBNode* z){
     else
       y->right = z;
   }
-  //rbInsertFixUp(t, z);
+  rbInsertFixUp(t, z);
 }
 
+void print(RBTree *t){
+  if(t == NULL){
+    return 
+  }
+}
