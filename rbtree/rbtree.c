@@ -79,9 +79,8 @@ void rightRotate(RBTree *t, RBNode* y){
       y->parent->right = x;
   }
 
-  x->left = y;
+  x->right = y;
   y->parent = x;
-
 }
 void rbInsertFixUp(RBTree *t, RBNode *z){
   while( z->parent && z->parent->color == RED){
