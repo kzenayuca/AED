@@ -47,6 +47,20 @@ int blackHeight(RBNode *rbnode){
   }
 }
 
+void arbolPruebaExitosa(RBTree *t){
+  RBNode* x = createRBNode(20);
+  RBNode* y = createRBNode(18);
+  RBNode* z = createRBNode(25);
+  RBNode* w = createRBNode(23);
+  RBNode* q = createRBNode(28);
+
+  rbInsert(t,x);
+  rbInsert(t,y);
+  rbInsert(t,z);
+  rbInsert(t,w);
+  rbInsert(t,q);
+}
+
 void arbolEjemplo(RBTree *t){
   t->root = createRBNode(7);
   t->root->color = BLACK;
@@ -71,7 +85,7 @@ void arbolEjemplo(RBTree *t){
 
   RBNode *cinco = left->right;
   cinco->left = createRBNode(4);
-  cinco->left->color = BLACK; //se rompe la propiedad
+ // cinco->left->color = BLACK; //se rompe la propiedad
 
   RBNode *catorce = right->right;
   catorce->right = createRBNode(15);
@@ -153,7 +167,7 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
     if(z->parent == z->parent->parent->left){
      // assert(z->parent->parent->right != NULL);
       y = z->parent->parent->right;
-      if(y->color == RED){
+      if(y && y->color == RED){
         z->parent->color = BLACK;
         y->color = BLACK;
         z->parent->parent->color = RED;
@@ -168,9 +182,9 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
         rightRotate(t,z->parent->parent);
       }
     }else{
-      y = z->parent->parent->left; //que pasa si no tiene un tio
+      y = z->parent->parent->left; //que pasa si tu tio es NULL
       //assert(z->parent->parent->left != NULL);
-      if(y->color == RED){
+      if(y && y->color == RED){
         z->parent->color = BLACK;
         y->color = BLACK;
         z->parent->parent->color = RED;
@@ -180,7 +194,8 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
           z = z->parent;
           rightRotate(t,z);
         }
-        z->parent->color = BLACK;
+        assert(z->parent != NULL);
+        z->parent->color = BLACK; //aqui tienes problemas con solo 3 nodos
         z->parent->parent->color = RED;
         leftRotate(t,z->parent->parent);
       }

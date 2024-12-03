@@ -14,6 +14,7 @@ RBNode* createRBNode(int key);
 typedef struct {RBNode *root;} RBTree;
 
 void arbolEjemplo(RBTree *t);
+void arbolPruebaExitosa(RBTree *t);
 
 RBTree* createRBTree();
 

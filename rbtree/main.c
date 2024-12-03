@@ -4,6 +4,8 @@
 int main(){
   RBTree* t = createRBTree();
   //arbolEjemplo(t);
+  //arbolPruebaExitosa(t);
+  
   RBNode* x = createRBNode(1);
   RBNode* y = createRBNode(2);
   RBNode* z = createRBNode(4);
@@ -23,7 +25,7 @@ int main(){
   rbInsert(t,b);
   rbInsert(t,c);
   rbInsert(t,d);
-
+  
   int bh = blackHeight(t->root);
   printf("Altura negra: %d \n",bh);
 }
