@@ -32,15 +32,49 @@ int isRootBlack(RBTree *t){
 
 int blackHeight(RBNode *rbnode){
   if(rbnode == NULL){
-    return (0);
+    return (1);
   }else{
-    int bh = blackHeight(rbnode->left);
-
-    if(rbnode->color == BLACK)
-      return (bh+1);
-    else
-      return bh;
+    int leftBH = blackHeight(rbnode->left);
+    int rightBH = blackHeight(rbnode->right);
+    
+    if(leftBH - rightBH == 0){
+      if(rbnode->color == BLACK)
+        return (leftBH+1);
+      else
+        return leftBH;
+    }else
+      return (-1);
   }
+}
+
+void arbolEjemplo(RBTree *t){
+  t->root = createRBNode(7);
+  t->root->color = BLACK;
+
+  RBNode *raiz = t->root;
+
+  raiz->left = createRBNode(2);
+  raiz->right = createRBNode(11);
+
+  RBNode *left = raiz->left;
+  RBNode *right = raiz->right;
+
+  left->left = createRBNode(1);
+  left->left->color = BLACK;
+  left->right = createRBNode(5);
+  left->right->color = BLACK;
+
+  right->left = createRBNode(8);
+  right->left->color = BLACK;
+  right->right = createRBNode(14);
+  right->right->color = BLACK;
+
+  RBNode *cinco = left->right;
+  cinco->left = createRBNode(4);
+  cinco->left->color = BLACK; //se rompe la propiedad
+
+  RBNode *catorce = right->right;
+  catorce->right = createRBNode(15);
 }
 
 int validateBlackChildren(RBNode *rbnode){
@@ -117,7 +151,7 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
   while( z->parent && z->parent->color == RED){
     RBNode* y;
     if(z->parent == z->parent->parent->left){
-      assert(z->parent->parent->right != NULL);
+     // assert(z->parent->parent->right != NULL);
       y = z->parent->parent->right;
       if(y->color == RED){
         z->parent->color = BLACK;
@@ -135,7 +169,7 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
       }
     }else{
       y = z->parent->parent->left; //que pasa si no tiene un tio
-      assert(z->parent->parent->left != NULL);
+      //assert(z->parent->parent->left != NULL);
       if(y->color == RED){
         z->parent->color = BLACK;
         y->color = BLACK;

@@ -13,6 +13,8 @@ RBNode* createRBNode(int key);
 
 typedef struct {RBNode *root;} RBTree;
 
+void arbolEjemplo(RBTree *t);
+
 RBTree* createRBTree();
 
 int isRootBlack(RBTree *t);
