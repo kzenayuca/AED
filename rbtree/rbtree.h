@@ -26,5 +26,6 @@ void leftRotate(RBTree *t, RBNode* x);
 void rightRotate(RBTree *t, RBNode* y);
 
 int blackHeight(RBNode *rbnode);
+int validateBlackChildren(RBNode *rbnode);
 #endif
 

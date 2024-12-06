@@ -47,6 +47,8 @@ int blackHeight(RBNode *rbnode){
   }
 }
 
+
+
 void arbolPruebaExitosa(RBTree *t){
   RBNode* x = createRBNode(20);
   RBNode* y = createRBNode(18);
@@ -90,14 +92,32 @@ void arbolEjemplo(RBTree *t){
   RBNode *catorce = right->right;
   catorce->right = createRBNode(15);
 }
-
-int validateBlackChildren(RBNode *rbnode){
-  if(rbnode->color == RED){
-    if(rbnode->left->color == BLACK && rbnode->right->color == BLACK){
-      return 1;
-    }
+int blackChildren(RBNode *rbnode){
+  assert(rbnode != NULL);
+  assert(!rbnode->color == BLACK);
+  if(!rbnode->left && !rbnode->right){ //si ambos son NULL
+    return 1;
   }
-  return 0;
+  //posibilidad a revisar : uno solo es NULL y el otro no
+  if(rbnode->left->color == BLACK && rbnode->right->color == BLACK)
+    return 1;
+  else
+    return 0;
+}
+
+
+//verificar que todos los nodos rojos tengan hijos negros.
+int validateBlackChildren(RBNode *rbnode){
+  if(rbnode == NULL){
+    return 1;
+  }else{
+    if(rbnode->color == RED){
+      if(!blackChildren(rbnode))
+        return 0;
+    }
+    return validateBlackChildren(rbnode->left) &&
+           validateBlackChildren(rbnode->right);
+  }
 }
 
 int verifyRBTreeBalance(RBTree *rbtree){
@@ -195,7 +215,7 @@ void rbInsertFixUp(RBTree *t, RBNode *z){
           rightRotate(t,z);
         }
         assert(z->parent != NULL);
-        z->parent->color = BLACK; //aqui tienes problemas con solo 3 nodos
+        z->parent->color = BLACK;
         z->parent->parent->color = RED;
         leftRotate(t,z->parent->parent);
       }

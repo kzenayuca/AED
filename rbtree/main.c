@@ -26,6 +26,9 @@ int main(){
   rbInsert(t,c);
   rbInsert(t,d);
   
+
   int bh = blackHeight(t->root);
   printf("Altura negra: %d \n",bh);
+  int validate = validateBlackChildren(t->root);
+  printf("Todos los nodos rojos tienen hijos negros?: %d\n",validate);
 }
